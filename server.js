@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const dbConfig = require("./db/db.config");
 const express = require("express");
+const https = require('https');
 const fs = require('fs');
 const bodyParser = require("body-parser");
 const cors = require('cors');
@@ -8,7 +9,7 @@ const options = {
     key: fs.readFileSync('key.pem'),
     cert: fs.readFileSync('cert.pem')
 };
-const app = express.createServer(options);
+const app = express();
 
 
 app.use(cors());
@@ -217,4 +218,5 @@ const getPointsLvl2 = (req, res) => {
 // fs pour supprimer les données multimédias et supprimer en bdd
 // chercher pour trouver comment rajouter un média et ajouter en bdd
 
-app.listen(3000);
+var server = https.createServer(options, app);
+server.listen(3000);
