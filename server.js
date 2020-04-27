@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const dbConfig = require("./db/db.config");
 const express = require("express");
+const fs = require('fs');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const options = {
@@ -8,7 +9,7 @@ const options = {
     cert: fs.readFileSync('cert.pem')
 };
 const app = express.createServer(options);
-const fs = require('fs');
+
 
 app.use(cors());
 app.use(express.static('medias'));
