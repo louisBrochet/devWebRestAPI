@@ -196,9 +196,9 @@ const getMediasLvl2 = (req, res) => {
 
 const getPointsLvl2 = (req, res) => {
     if (Object.keys(req.query).length > 0){
-        let reqSql = "select * from points, " + req.params.table2
-            + "points where points.idPoint = " + req.params.table2
-            + "points.idPoint and " + Object.keys(req.query)[0]
+        let reqSql = "select * from Points, " + req.params.table2
+            + "Points where Points.idPoint = " + req.params.table2
+            + "Points.idPoint and " + Object.keys(req.query)[0]
             + " = " + req.query[Object.keys(req.query)[0]];
         reqSql += ";";
         connection.query(reqSql, function(err, results){
