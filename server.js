@@ -218,5 +218,5 @@ const getPointsLvl2 = (req, res) => {
 // fs pour supprimer les données multimédias et supprimer en bdd
 // chercher pour trouver comment rajouter un média et ajouter en bdd
 
-var server = https.createServer(options, app);
-server.listen(3000);
+var server = https.createServer(app);
+server.listen(442);
