@@ -6,8 +6,9 @@ const fs = require('fs');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
+    key: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/cert.pem', 'utf8'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/chain.pem', 'utf8')
 };
 const app = express();
 
@@ -218,4 +219,6 @@ const getPointsLvl2 = (req, res) => {
 // fs pour supprimer les données multimédias et supprimer en bdd
 // chercher pour trouver comment rajouter un média et ajouter en bdd
 
-app.listen(80);
+const httpsServer = https.createServer(options, app);
+
+httpsServer.listen(443);
