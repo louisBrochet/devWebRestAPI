@@ -3,7 +3,13 @@ const dbConfig = require("./db/db.config");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require('cors');
-const app = express();
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+const app = express.createServer(options);
+const fs = require('fs');
+
 app.use(cors());
 app.use(express.static('medias'));
 // parse requests of content-type: application/json
