@@ -2,10 +2,10 @@
   "name": "devwebrestapi",
   "version": "1.0.0",
   "description": "NodeJs Restful CRUD API (with Express and MySQL)",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "git respository": "https://github.com/louisBrochet/devWebRestAPI",
   "keywords": [
@@ -22,7 +22,6 @@
     "mysql": "^2.18.1"
   },
   "devDependencies": {
-    "cors": "^2.8.5",
-    "ejs": "^3.0.1"
+    "cors": "^2.8.5"
   }
 }
