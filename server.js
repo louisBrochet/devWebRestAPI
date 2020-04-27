@@ -6,9 +6,9 @@ const fs = require('fs');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem', 'utf8'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/cert.pem', 'utf8'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/chain.pem', 'utf8')
+    key: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/cert.pem', 'utf8'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/chain.pem', 'utf8')
 };
 const app = express();
 
