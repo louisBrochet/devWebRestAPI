@@ -137,8 +137,8 @@ const reqDb = {
     delete: function (req, res) {
         if (Object.keys(req.query).length > 0){
             let reqSql = "delete from " + req.params.table + " where ";
-            Object.keys(req.query).forEach((e, i , a) => {
-                if (isNaN(req.body[e])){
+            Object.keys(req.query).forEach((e, i, a ) => {
+                if (isNaN(req.query[e])){
                     reqSql += e + " = '" + req.query[e] + "'";
                 }
                 else{
