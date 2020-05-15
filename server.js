@@ -1,54 +1,64 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////// DevWebRestAPI ////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////// Louis Brochet //////////////
+//////// Connexion à la base de données ////////////////////////////////////////////////////////////////////////////////
 const mysql = require("mysql");
-const dbConfig = require("./db/db.config");
-const express = require("express");
-const https = require('https');
-const fs = require('fs');
-const bodyParser = require("body-parser");
-const cors = require('cors');
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/privkey.pem', 'utf8'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/cert.pem', 'utf8'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/chain.pem', 'utf8')
-};
-const app = express();
-
-
-app.use(cors());
-app.use(express.static('medias'));
-// parse requests of content-type: application/json
-app.use(bodyParser.json());
-
-// parse requests of content-type: application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Create a connection to the database
+const dbConfig = require("./db/db.config"); // Fichier de configuration utilisateur base de données
 const connection = mysql.createConnection({
     host: dbConfig.HOST,
     user: dbConfig.USER,
     password: dbConfig.PASSWORD,
     database: dbConfig.DB
 });
-
-// open the MySQL connection
 connection.connect(error => {
     if (error) throw error;
-    console.log("Successfully connected to the database.");
+    console.log("Connexion à la base de données réussie");
 });
-
-///////Routes/////////
-
-app.route('/api/:table')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// Création du serveur + HTTPS ///////////////////////////////////////////////////////////////////////////////////
+const express = require("express");
+const https = require('https');
+const fs = require('fs'); // Manipulation de fichiers et de répertoires
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/cert.pem', 'utf8'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/www.wt1-2.ephec-ti.be/chain.pem', 'utf8')
+};
+const app = express();
+const httpsServer = https.createServer(options, app);
+httpsServer.listen(3000);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// Routage statique //////////////////////////////////////////////////////////////////////////////////////////////
+app.use(express.static('medias')); // Tout ce qui se trouve dans le répertoire médias est routable
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// CORS //////////////////////////////////////////////////////////////////////////////////////////////////////////
+// (Autoriser uniquement l'accès au server Web)
+const cors = require('cors');
+const corsOptions = {
+    origin: 'https://biodiversite-lln.web.app',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions));
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// Outils requêtes ///////////////////////////////////////////////////////////////////////////////////////////////
+const bodyParser = require("body-parser");
+// parse requests of content-type: application/json
+app.use(bodyParser.json());
+// parse requests of content-type: application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// Routes ////////////////////////////////////////////////////////////////////////////////////////////////////////
+// la route /api/:table est dynamique et fonctionne pour toutes les tables de la base de données
+app.route('/api/:table') // :table est une variable pour rendre le routage dynamique
     .get((req, res) => reqDb.find(req, res))
     .post((req, res) => reqDb.create(req, res))
     .put((req, res) => reqDb.update(req, res))
     .delete((req, res) => reqDb.delete(req, res));
-
-app.route('/api/points/:table2').get((req, res) => getPointsLvl2(req, res));
-
-app.route('/api/medias/points').get((req, res) => getMediasLvl2(req, res));
-
-//////Requêtes db /////////////
-
+// Sur deux tables
+app.route('/api/points/:table2').get((req, res) => getPointsLvl2(req, res)); // Récupérer des points en fonction d'une autre table
+app.route('/api/medias/points').get((req, res) => getMediasLvl2(req, res)); // Récupérer le path des médias en fonction d'un point
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// Requêtes dynamique CRUD ///////////////////////////////////////////////////////////////////////////////////////
 const reqDb = {
     create: function (req, res){
         let reqSql = "insert into " + req.params.table + " (";
@@ -163,7 +173,8 @@ const reqDb = {
         }
     }
 };
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// Requêtes spéciales ////////////////////////////////////////////////////////////////////////////////////////////
 const getMediasLvl2 = (req, res) => {
     if (Object.keys(req.query).length > 0){
         let reqSql = "select idMedia, localisationMedia from medias, points where medias.idPoint = points.idPoint and ";
@@ -193,7 +204,6 @@ const getMediasLvl2 = (req, res) => {
         res.status(400).send("Vous devez renseigner des paramètres dans votre requête");
     }
 };
-
 const getPointsLvl2 = (req, res) => {
     if (Object.keys(req.query).length > 0){
         let reqSql = "select * from Points, " + req.params.table2
@@ -214,11 +224,4 @@ const getPointsLvl2 = (req, res) => {
         res.status(400).send("Vous devez renseigner des paramètres dans votre requête");
     }
 };
-
-// Trafiquer les requêtes pour les données multmédias (url)
-// fs pour supprimer les données multimédias et supprimer en bdd
-// chercher pour trouver comment rajouter un média et ajouter en bdd
-
-const httpsServer = https.createServer(options, app);
-
-httpsServer.listen(3000);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
