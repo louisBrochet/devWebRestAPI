@@ -242,7 +242,7 @@ const login = (req, res) => {
                 };
                 res.status(200).json(user);
             } else {
-                res.status(401).send('Mot de passe érroné.');
+                res.status(403).send('Mot de passe érroné.');
             }
         }
     });
@@ -252,10 +252,10 @@ const register = (req, res) => {
     let reqSql = 'INSERT INTO Utilisateurs(username, password) VALUES("' + req.body.username + '", "' + req.body.password + '")';
     connection.query(reqSql, function (err, results) {
         if (err) {
-            res.status(401).send('Nom d\'utilisateur déjà utilisé.\n Veuillez en choisir un autre.');
+            res.status(403).send('Nom d\'utilisateur déjà utilisé.\n Veuillez en choisir un autre.');
         }
         else {
-            res.status(200).json(req.body);
+            res.status(200).json(results);
         }
     });
 }
