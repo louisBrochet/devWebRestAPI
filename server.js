@@ -58,6 +58,7 @@ app.route('/api/:table') // :table est une variable pour rendre le routage dynam
 app.route('/api/points/:table2').get((req, res) => getPointsLvl2(req, res)); // Récupérer des points en fonction d'une autre table
 app.route('/api/medias/points').get((req, res) => getMediasLvl2(req, res)); // Récupérer le path des médias en fonction d'un point
 app.route('/api/utilisateurs/login').post((req, res) => login(req, res));
+app.route('api/utilisateurs/register').post((req, res) => register(req, res));
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// Requêtes dynamique CRUD ///////////////////////////////////////////////////////////////////////////////////////
 const reqDb = {
@@ -227,7 +228,7 @@ const getPointsLvl2 = (req, res) => {
 };
 
 const login = (req, res) => {
-    let reqSql = 'SELECT * FROM Utilisateurs WHERE username = \"' + req.body.username + '\";';
+    let reqSql = 'SELECT * FROM Utilisateurs WHERE username = "' + req.body.username + '";';
     console.log(reqSql);
     connection.query(reqSql, function (err, results) {
         if (err) {
@@ -240,6 +241,18 @@ const login = (req, res) => {
                 token: 'fake-jwt-token'
         };
             res.status(200).json(user);
+        }
+    });
+}
+
+const register = (req, res) => {
+    let reqSql = 'INSERT INTO Utilisateurs(username, password) VALUES("' + req.body.username + '", "' + req.body.password + '")';
+    connection.query(reqSql, function (err, results) {
+        if (err) {
+            res.status(401).send(err);
+        }
+        else {
+            res.status(200).json(results)
         }
     });
 }
