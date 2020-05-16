@@ -231,7 +231,7 @@ const login = (req, res) => {
     console.log(reqSql);
     connection.query(reqSql, function (err, results) {
         if (err) {
-            res.status(500).send(err);
+            res.status(401).send(err);
         }
         else {
             let user = JSON.parse(results);
