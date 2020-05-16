@@ -234,8 +234,12 @@ const login = (req, res) => {
             res.status(401).send(err);
         }
         else {
-            let user = results[0];
-            console.log(user.username);
+            let user = {
+                id: results[0].id,
+                username: results[0].username,
+                token: 'fake-jwt-token'
+        };
+            res.status(200).json(user);
         }
     });
 }
