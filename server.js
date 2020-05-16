@@ -235,7 +235,7 @@ const login = (req, res) => {
         }
         else {
             let user = results;
-            console.log(user.username);
+            console.log(user[0]);
         }
     });
 }
