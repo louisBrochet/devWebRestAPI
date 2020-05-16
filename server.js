@@ -228,7 +228,7 @@ const getPointsLvl2 = (req, res) => {
 
 const login = (req, res) => {
     let reqSql = 'SELECT * FROM Utilisateurs WHERE username = ' + req.body.username + ';';
-    console.log(reqSQL);
+    console.log(reqSql);
     connection.query(reqSql, function (err, results) {
         if (err) {
             res.status(500).send(err);
