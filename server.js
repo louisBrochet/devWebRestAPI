@@ -234,8 +234,8 @@ const login = (req, res) => {
             res.status(401).send(err);
         }
         else {
-            let user = results;
-            console.log(user[0]);
+            let user = results[0];
+            console.log(user.username);
         }
     });
 }
