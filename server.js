@@ -58,7 +58,7 @@ app.route('/api/:table') // :table est une variable pour rendre le routage dynam
 app.route('/api/points/:table2').get((req, res) => getPointsLvl2(req, res)); // Récupérer des points en fonction d'une autre table
 app.route('/api/medias/points').get((req, res) => getMediasLvl2(req, res)); // Récupérer le path des médias en fonction d'un point
 app.route('/api/utilisateurs/login').post((req, res) => login(req, res));
-app.route('api/utilisateurs/register').post((req, res) => register(req, res));
+app.route('/api/utilisateurs/register').post((req, res) => register(req, res));
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// Requêtes dynamique CRUD ///////////////////////////////////////////////////////////////////////////////////////
 const reqDb = {
