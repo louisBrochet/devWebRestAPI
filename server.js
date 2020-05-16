@@ -252,7 +252,7 @@ const register = (req, res) => {
             res.status(401).send(err);
         }
         else {
-            res.status(200).send('Inscription Réussie.');
+            res.status(200).send(results);
         }
     });
 }
