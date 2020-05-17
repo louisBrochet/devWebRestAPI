@@ -256,7 +256,20 @@ const register = (req, res) => {
             res.status(403).send(err);
         }
         else {
-            res.status(200).send(results);
+            let sql = 'SELECT * FROM Utilisateurs WHERE username = "' + req.body.username + '";';
+            connection.query(sql, function (error, result) {
+                if (error) {
+                    res.status(403).send(error);
+                } else {
+                    let user = {
+                        id: result[0].id,
+                        username: result[0].username,
+                        password: result[0].password
+                    };
+                    res.status(200).json(user);
+                }
+            })
+
         }
     });
 }
