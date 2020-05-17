@@ -242,7 +242,7 @@ const login = (req, res) => {
                 };
                 res.status(200).json(user);
             } else {
-                res.status(403).send(err);
+                res.status(401).send(err);
             }
         }
     });
@@ -252,7 +252,7 @@ const register = (req, res) => {
     let reqSql = 'INSERT INTO Utilisateurs(username, password) VALUES("' + req.body.username + '", "' + req.body.password + '")';
     connection.query(reqSql, function (err, results) {
         if (err) {
-            res.status(403).send(err);
+            res.status(401).send(err);
         }
         else {
             res.status(200).json(results);
