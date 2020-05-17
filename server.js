@@ -238,7 +238,8 @@ const login = (req, res) => {
             if (results[0].password === req.body.password) {
                 let user = {
                     id: results[0].id,
-                    username: results[0].username
+                    username: results[0].username,
+                    password: results[0].password
                 };
                 res.status(200).json(user);
             } else {
@@ -255,7 +256,7 @@ const register = (req, res) => {
             res.status(403).send(err);
         }
         else {
-            res.status(200).json(results);
+            res.status(200).json(req.body);
         }
     });
 }
