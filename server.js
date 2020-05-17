@@ -256,7 +256,7 @@ const register = (req, res) => {
             res.status(403).send(err);
         }
         else {
-            res.status(200).json(req.body);
+            res.status(200).send(results);
         }
     });
 }
