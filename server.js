@@ -229,22 +229,18 @@ const getPointsLvl2 = (req, res) => {
 
 const login = (req, res) => {
     let reqSql = 'SELECT * FROM Utilisateurs WHERE username = "' + req.body.username + '";';
-    console.log(reqSql);
     connection.query(reqSql, function (err, results) {
-        if (err) {
+        if (results[0].password === req.body.password) {
+            let user = {
+                id: results[0].id,
+                username: results[0].username,
+                password: results[0].password
+            };
+            res.status(200).json(user);
+        } else if (results[0].password !== req.body.password) {
+            res.status(400).json({message : 'Mot de passe incorrect.'});
+        } else {
             res.status(400).json({message: 'Votre nom d\'utilisateur n\'éxiste pas,\n veuillez vous inscrire.'});
-        }
-        else {
-            if (results[0].password === req.body.password) {
-                let user = {
-                    id: results[0].id,
-                    username: results[0].username,
-                    password: results[0].password
-                };
-                res.status(200).json(user);
-            } else {
-                res.status(400).json({message : 'Mot de passe incorrect.'});
-            }
         }
     });
 }
