@@ -232,7 +232,7 @@ const login = (req, res) => {
     console.log(reqSql);
     connection.query(reqSql, function (err, results) {
         if (err) {
-            res.status(403).send(err);
+            res.status(400).json({message: 'Votre nom d\'utilisateur n\'éxiste pas,\n veuillez vous inscrire.'});
         }
         else {
             if (results[0].password === req.body.password) {
@@ -243,7 +243,7 @@ const login = (req, res) => {
                 };
                 res.status(200).json(user);
             } else {
-                res.status(403).send(err);
+                res.status(400).json({message : 'Mot de passe incorrect.'});
             }
         }
     });
@@ -253,23 +253,10 @@ const register = (req, res) => {
     let reqSql = 'INSERT INTO Utilisateurs(username, password) VALUES("' + req.body.username + '", "' + req.body.password + '")';
     connection.query(reqSql, function (err, results) {
         if (err) {
-            res.status(403).send(err);
+            res.status(400).json({message: 'Ce nom d\'utilisateur éxiste déjà,\n veuillez en choisir un autre.'});
         }
         else {
-            let sql = 'SELECT * FROM Utilisateurs WHERE username = "' + req.body.username + '";';
-            connection.query(sql, function (error, result) {
-                if (error) {
-                    res.status(403).send(error);
-                } else {
-                    let user = {
-                        id: result[0].id,
-                        username: result[0].username,
-                        password: result[0].password
-                    };
-                    res.status(200).json(user);
-                }
-            })
-
+            res.status(200).json({});
         }
     });
 }
