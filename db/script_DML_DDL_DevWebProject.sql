@@ -1,3 +1,93 @@
+CREATE DATABASE `devWeb_Project_Bdd` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */
+
+create table Admins
+(
+	adminId int(5) auto_increment
+		primary key,
+	adminPseudo varchar(25) not null,
+	adminMdp varchar(64) not null,
+	constraint Admins_adminPseudo_uindex
+		unique (adminPseudo)
+);
+
+create table Categories
+(
+	idCategorie int(3) auto_increment
+		primary key,
+	nameCategorie varchar(45) not null
+);
+
+create table Parcours
+(
+	idParcours int(5) auto_increment
+		primary key,
+	nameParcours varchar(45) not null
+);
+
+create table Points
+(
+	idPoint int(5) auto_increment
+		primary key,
+	namePoint varchar(100) not null,
+	descriptionPoint varchar(2000) null,
+	latitudePoint double not null,
+	longitudePoint double not null,
+	vernaculairePoint varchar(100) null,
+	disponiblePoint tinyint(1) default 1 not null
+);
+
+create table CategoriesPoints
+(
+	idPoint int(5) not null,
+	idCategorie int(5) not null,
+	primary key (idPoint, idCategorie),
+	constraint CPC
+		foreign key (idCategorie) references Categories (idCategorie)
+			on update cascade on delete cascade,
+	constraint CPP
+		foreign key (idPoint) references Points (idPoint)
+			on update cascade on delete cascade
+);
+
+create index CPC_idx
+	on CategoriesPoints (idCategorie);
+
+create table Medias
+(
+	idMedia int(5) auto_increment
+		primary key,
+	localisationMedia varchar(45) not null,
+	idPoint int(5) null,
+	constraint photosPoints
+		foreign key (idPoint) references Points (idPoint)
+);
+
+create table ParcoursPoints
+(
+	idPoint int(5) not null,
+	idParcours int(5) not null,
+	numeroParcours int(3) not null,
+	primary key (idPoint, idParcours),
+	constraint ParcoursPoints_Parcours_idParcours_fk
+		foreign key (idParcours) references Parcours (idParcours)
+			on update cascade on delete cascade,
+	constraint ParcoursPoints_Points_idPoint_fk
+		foreign key (idPoint) references Points (idPoint)
+			on update cascade on delete cascade
+);
+
+create table Utilisateurs
+(
+	id int(5) auto_increment
+		primary key,
+	username varchar(40) not null,
+	password varchar(40) not null,
+	constraint Utilisateurs_pseudoUtilisateur_uindex
+		unique (username)
+);
+
+
+
 INSERT INTO devWeb_Project_Bdd.Admins (adminId, adminPseudo, adminMdp) VALUES (1, 'admin1', 'user1234');
 
 INSERT INTO devWeb_Project_Bdd.Categories (idCategorie, nameCategorie) VALUES (1, 'Acer');
@@ -503,6 +593,8 @@ INSERT INTO devWeb_Project_Bdd.ParcoursPoints (idPoint, idParcours, numeroParcou
 INSERT INTO devWeb_Project_Bdd.ParcoursPoints (idPoint, idParcours, numeroParcours) VALUES (159, 5, 5);
 INSERT INTO devWeb_Project_Bdd.ParcoursPoints (idPoint, idParcours, numeroParcours) VALUES (160, 5, 6);
 
+INSERT INTO devWeb_Project_Bdd.Utilisateurs (id, username, password) VALUES (1, 'admin', 'admin1234');
+INSERT INTO devWeb_Project_Bdd.Utilisateurs (id, username, password) VALUES (9, 'Arylmera', 'azerty');
+INSERT INTO devWeb_Project_Bdd.Utilisateurs (id, username, password) VALUES (10, 'arnaud', 'arnaud1998');
+INSERT INTO devWeb_Project_Bdd.Utilisateurs (id, username, password) VALUES (33, 'louis', 'user1234');
 
-
-}
