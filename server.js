@@ -57,6 +57,7 @@ const keyVerfication = (req, res, next) => {
     else {
         if (reqKey == key){
             delete req.query.key;
+            console.log(req.query);
             next();
         }
         else {
