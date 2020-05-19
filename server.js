@@ -239,11 +239,11 @@ const login = (req, res) => {
             res.status(200).json(user);
         } else if (results[0].password !== req.body.password) {
             res.status(400).json({message : 'Mot de passe incorrect.'});
+        } else {
+            res.status(400).json({message: 'Votre nom d\'utilisateur n\'éxiste pas,\n veuillez vous inscrire.'});
         }
-
-        res.status(400).json({message: 'Votre nom d\'utilisateur n\'éxiste pas,\n veuillez vous inscrire.'});
-
     });
+    res.status(400).json({message: 'Votre nom d\'utilisateur n\'éxiste pas,\n veuillez vous inscrire.'});
 }
 
 const register = (req, res) => {
