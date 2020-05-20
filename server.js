@@ -199,13 +199,13 @@ const reqDb = {
 //////// Requêtes spéciales ////////////////////////////////////////////////////////////////////////////////////////////
 const getMediasLvl2 = (req, res) => {
     if (Object.keys(req.query).length > 0) {
-        let reqSql = "select idMedia, localisationMedia from Medias, Points where medias.idPoint = points.idPoint and ";
+        let reqSql = "select idMedia, localisationMedia from Medias, Points where Medias.idPoint = Points.idPoint and ";
         Object.keys(req.query).forEach((e, i, a) => {
             if (isNaN(req.query[e])) {
-                reqSql += "points." + e + " = '" + req.query[e] + "'";
+                reqSql += "Points." + e + " = '" + req.query[e] + "'";
             }
             else {
-                reqSql += "points." + e + " = " + req.query[e];
+                reqSql += "Points." + e + " = " + req.query[e];
             }
             if (i < a.length - 1) {
                 reqSql += " and ";
