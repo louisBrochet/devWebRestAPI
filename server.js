@@ -233,6 +233,7 @@ const getPointsLvl2 = (req, res) => {
             + "Points.idPoint and " + Object.keys(req.query)[0]
             + " = " + req.query[Object.keys(req.query)[0]];
         reqSql += ";";
+        console.log(reqSql);
         connection.query(reqSql, function (err, results) {
             if (err) {
                 res.status(500).send(err);
