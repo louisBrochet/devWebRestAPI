@@ -1,0 +1,491 @@
+openapi: 3.0.0
+info:
+  title: DevWebRestAPI
+  description: API pour la base de données du projet DevWeb.  <br><br> La sécurité se fait à l'aide d'une clé non renseignée dans cette documentation.
+  contact:
+    email: l.brochet@students.ephec.be
+  version: 1.0.0
+servers:
+  - url: 'https://www.wt1-2.ephec-ti.be:3000/api'
+    description: Serveur de l'API.
+tags:
+  - name: Niveau 1
+    description: Opérations sur une table.   <br><br> Ici on peut voir un example avec la table Points mais cela fonctionne avec toutes les tables de la base de données. Vous pouvez voir plus bas dans la documentation les schémas des tables.
+  - name: Niveau 2
+    description: Opérations sur plusieurs tables. <br><br> Ici se retrouve des requêtes un peu plus spécifiques.
+paths:
+  /Points:
+    get:
+      tags:
+        - Niveau 1
+      summary: Récupération des points
+      description: Avec les bons paramètres vous pourrez récupérer uniquement le/les point(s) dont vous avez besoin.
+      operationId: recupPoints
+      parameters:
+        - name: idPoint
+          in: query
+          description: Vous permet de récupérer un point en fonction de son id.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: namePoint
+          in: query
+          description: Vous permet de récupérer un point en fonction de son nom.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: vernaculairePoint
+          in: query
+          description: Vous permet de récupérer un point en fonction de son nom vernaculaire.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: descriptionPoint
+          in: query
+          description: Vous permet de récupérer un point en fonction de sa description.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: disponiblePoint
+          in: query
+          description: Vous permet de récupérer un point en fonction de sa disponibilité.
+          required: false
+          style: form
+          explode: true
+          schema:
+            maximum: 1
+            minimum: 0
+            type: integer
+      responses:
+        '200':
+          description: La requête n'a pas généré d'erreur. /!\ Si la réponse est vide c'est que la valeur d'un des paramètres n'existe pas dans la base de données.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Points'
+        '500':
+          description: Si l'API vous répond avec une erreur 500 c'est soit un problème dans votre requête soit un bug de l'API.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '{"code":"ER_BAD_FIELD_ERROR","errno":1054,"sqlMessage":"Unknown column ''nnamePoint'' in ''where clause''","sqlState":"42S22","index":0,"sql":"select * from Points where nnamePoint = ''Ginkgo biloba'';"}'
+    put:
+      tags:
+        - Niveau 1
+      summary: Modifier un point
+      description: Permet de modifier un point de la base de données.
+      operationId: modifPoint
+      parameters:
+        - name: idPoint
+          in: query
+          description: L'id du point que vous souhaitez modifier.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+      requestBody:
+        description: Indiquer dans le request body les valeurs à modifier du point. Dans cet exemple on cherche à modifier les coordonnées du point.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Points'
+            example:
+              latitudePoint: 167923.3803000003
+              longitudePoint: 160998.59340000153
+        required: true
+      responses:
+        '200':
+          description: La requête n'a pas généré d'erreur. L'api renvoie le résultat de la base de données.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"(Rows matched: 1  Changed: 1  Warnings: 0","protocol41":true,"changedRows":1}'
+        '400':
+          description: Vous n\'avez pas renseigné l\'id dans les paramètres.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: Vous devez renseigner l'id de l'objet dans les paramètres de votre requête
+        '500':
+          description: Si l'API vous répond avec une erreur 500 c'est soit un problème dans votre requête soit un bug de l'API. Renvoie l'erreur de l'api
+          content:
+            application/json:
+              schema:
+                type: string
+                example: ...
+    post:
+      tags:
+        - Niveau 1
+      summary: Ajout de points
+      description: Permet d'ajouter un point à la base de données.
+      operationId: ajoutPoint
+      requestBody:
+        description: /!\ Ne pas mettre d'id dans le request body il est auto-incrémenté automatiquement.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Points'
+            example:
+              namePoint: Salix alba cv. tristis
+              descriptionPoint: 'Le Saule blanc, Saule commun, Saule argenté, Osier blanc, ou Saule Vivier (Salix alba L.), ...'
+              latitudePoint: 167823.3803000003
+              longitudePoint: 150998.59340000153
+              vernaculairePoint: Saule blanc pleureur
+              disponiblePoint: 1
+        required: true
+      responses:
+        '200':
+          description: La requête n'a pas généré d'erreur. L'api renvoie le résultat de la base de données.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"fieldCount":0,"affectedRows":1,"insertId":2,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}'
+        '500':
+          description: Si l'API vous répond avec une erreur 500 c'est soit un problème dans votre requête soit un bug de l'API. Renvoie l'erreur de l'api
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"code":"ER_NO_DEFAULT_FOR_FIELD","errno":1364,"sqlMessage":"Field ''namePoint'' doesn''t have a default value","sqlState":"HY000","index":0,"sql":"insert into Points (longitudePoint, latitudePoint, descriptionPoint) values (25, 35, ''abbbzkfbekbejkfsekjfsf'');"}'
+    delete:
+      tags:
+        - Niveau 1
+      summary: Supprimer un point
+      description: Permet de supprimer un point de la base de données.
+      operationId: deletePoint
+      parameters:
+        - name: idPoint
+          in: query
+          description: Vous permet de supprimer un point en fonction de son id.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: namePoint
+          in: query
+          description: Vous permet de supprimer un point en fonction de son nom.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: vernaculairePoint
+          in: query
+          description: Vous permet de supprimer un point en fonction de son nom vernaculaire.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: descriptionPoint
+          in: query
+          description: Vous permet de supprimer un point en fonction de sa description.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: disponiblePoint
+          in: query
+          description: Vous permet de supprimer un point en fonction de sa disponibilité.
+          required: false
+          style: form
+          explode: true
+          schema:
+            maximum: 1
+            minimum: 0
+            type: integer
+      responses:
+        '200':
+          description: La requête n'a pas généré d'erreur. L'api renvoie le résultat de la base de données.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: '{"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":34,"warningCount":0,"message":"","protocol41":true,"changedRows":0}'
+        '500':
+          description: Si l'API vous répond avec une erreur 500 c'est soit un problème dans votre requête soit un bug de l'API. Renvoie l'erreur de l'api
+          content:
+            application/json:
+              schema:
+                type: string
+                example: ...
+  /Points/Categories:
+    get:
+      tags:
+        - Niveau 2
+      summary: Récupération de points par rapport à une catégorie.
+      description: Permet de récupérer des points en fonction de l'id d'une catégorie
+      operationId: recupPointsLv2Categories
+      parameters:
+        - name: idCategorie
+          in: query
+          description: L'id de la catégorie dont vous voulez récupérer les points.
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: La requête n'a pas généré d'erreur. /!\ Si la réponse est vide c'est que la valeur d'un des paramètres n'existe pas dans la base de données.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Points'
+        '400':
+          description: Vous n\'avez pas renseigné l\'id dans les paramètres.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: Vous devez renseigner des paramètres dans votre requête.
+        '500':
+          description: Si l'API vous répond avec une erreur 500 c'est soit un problème dans votre requête soit un bug de l'API. Renvoie l'erreur de l'api
+          content:
+            application/json:
+              schema:
+                type: string
+                example: ...
+  /Points/Parcours:
+    get:
+      tags:
+        - Niveau 2
+      summary: Récupération de points par rapport à un parcours.
+      description: Permet de récupérer des points en fonction de l'id d'un parcours
+      operationId: recupPointsLv2Parcours
+      parameters:
+        - name: idParcours
+          in: query
+          description: L'id d'un parcours dont vous voulez récupérer les points.
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: La requête n'a pas généré d'erreur. /!\ Si la réponse est vide c'est que la valeur d'un des paramètres n'existe pas dans la base de données.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Points'
+        '400':
+          description: Vous n\'avez pas renseigné l\'id dans les paramètres.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: Vous devez renseigner des paramètres dans votre requête.
+        '500':
+          description: Si l'API vous répond avec une erreur 500 c'est soit un problème dans votre requête soit un bug de l'API. Renvoie l'erreur de l'api
+          content:
+            application/json:
+              schema:
+                type: string
+                example: ...
+  /Medias/Points:
+    get:
+      tags:
+        - Niveau 2
+      summary: Récupération des médias d'un point.
+      description: Permet de récupérer les médias d'un point en fonction d'un point
+      operationId: recupMediasLvl2
+      parameters:
+        - name: idPoint
+          in: query
+          description: id du point dont vous voulez récupérer les médias
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: namePoint
+          in: query
+          description: nom du point dont vous voulez récupérer les médias
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: vernaculairePoint
+          in: query
+          description: nom vernaculaire du point dont vous voulez récupérer les médias
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: descriptionPoint
+          in: query
+          description: description du point dont vous voulez récupérer les médias
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: disponiblePoint
+          in: query
+          description: Accessibilité du point dont vous voulez récupérer les médias
+          required: false
+          style: form
+          explode: true
+          schema:
+            maximum: 1
+            minimum: 0
+            type: integer
+      responses:
+        '200':
+          description: La requête n'a pas généré d'erreur. /!\ Si la réponse est vide c'est qu'il n'existe pas de médias pour le point ou qu'une valeur des paramètres n'existe pas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Medias'
+        '400':
+          description: Vous n\'avez pas renseigné l\'id dans les paramètres.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: Vous devez renseigner des paramètres dans votre requête.
+        '500':
+          description: Si l'API vous répond avec une erreur 500 c'est soit un problème dans votre requête soit un bug de l'API. Renvoie l'erreur de l'api
+          content:
+            application/json:
+              schema:
+                type: string
+                example: ...
+components:
+  schemas:
+    Points:
+      required:
+        - idPoint
+        - namePoint
+        - vernaculairePoint
+      type: object
+      properties:
+        idPoint:
+          type: integer
+          example: 1
+        namePoint:
+          type: string
+          example: Salix alba cv. tristis
+        descriptionPoint:
+          type: string
+          example: 'Le Saule blanc, Saule commun, Saule argenté, Osier blanc, ou Saule Vivier (Salix alba L.), ...'
+        latitudePoint:
+          type: integer
+        longitudePoint:
+          type: integer
+        vernaculairePoint:
+          type: string
+          example: Saule blanc pleureur
+        disponiblePoint:
+          type: integer
+          example: 1
+    Categories:
+      required:
+        - idCategorie
+        - nameCateogrie
+      type: object
+      properties:
+        idCategorie:
+          type: integer
+          example: 1
+        nameCategorie:
+          type: string
+          example: Acer
+    Parcours:
+      required:
+        - idParcours
+        - nameParcours
+      type: object
+      properties:
+        idParcours:
+          type: integer
+          example: 1
+        nameParcours:
+          type: string
+          example: Parcours des Sciences
+    Medias:
+      required:
+        - idMedia
+        - idPoint
+        - localisationMedia
+      type: object
+      properties:
+        idMedia:
+          type: integer
+          example: 1
+        localisationMedia:
+          type: string
+          example: /forêt.jpg
+        idPoint:
+          type: integer
+          example: 1
+    CategoriesPoints:
+      required:
+        - idCategorie
+        - idPoint
+      type: object
+      properties:
+        idPoint:
+          type: integer
+          example: 1
+        idCategorie:
+          type: integer
+          example: 1
+    ParcoursPoints:
+      required:
+        - idParcours
+        - idPoint
+        - numeroParcours
+      type: object
+      properties:
+        idPoint:
+          type: integer
+          example: 1
+        idParcours:
+          type: integer
+          example: 1
+        numeroParcours:
+          type: integer
+          example: 1
+    Utilisateurs:
+      required:
+        - id
+        - password
+        - username
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: test
+        password:
+          type: string
+          example: test1234

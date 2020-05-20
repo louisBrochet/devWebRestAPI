@@ -100,6 +100,7 @@ INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (2, 'P
 INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (3, 'Parcours du jardin botanique');
 INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (4, 'Parcours du lac');
 INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (5, 'Parcours du parc de Moulinsart');
+
 INSERT INTO devWeb_Project_Bdd.Points (idPoint, namePoint, descriptionPoint, latitudePoint, longitudePoint, vernaculairePoint, disponiblePoint) VALUES (1, 'Salix alba cv. tristis', 'Le Saule blanc, Saule commun, Saule argenté, Osier blanc, ou Saule Vivier (Salix alba L.), est un arbre de la famille des Salicacées. Cet arbre commun dans les régions tempérées est souvent cultivé en forme de « têtard » pour la production d''osier.', 167823.3803000003, 150998.59340000153, 'Saule blanc pleureur', 1);
 INSERT INTO devWeb_Project_Bdd.Points (idPoint, namePoint, descriptionPoint, latitudePoint, longitudePoint, vernaculairePoint, disponiblePoint) VALUES (2, 'Acer pensylvanicum', 'L’érable de Pennsylvanie ou érable jaspé (Acer pensylvanicum) est l''unique «érable à peau de serpent» qui ne soit pas originaire d''Asie mais du nord-est de l’Amérique du Nord (et principalement de Pennsylvanie). Il appartient à la section Macrantha de la classification des érables et a été introduit en Europe en 1755. L’équivalent asiatique est Acer tegmentosum.
 
@@ -386,6 +387,7 @@ Quercus dentata est un arbre à feuilles caduques atteignant 20–25 m de haut, 
 
 Les fleurs sont produites en mai; les fleurs mâles sont des chatons pendants. Les fleurs femelles sont sessiles, poussant près de l''extrémité des nouvelles pousses, produisant des glands de 1,2–2,3 cm de long et de 1,2–1,5 cm de large, dans de larges coupes à écailles touffues; les glands mûrissent de septembre à octobre.', 166883.9557000026, 150068.75979999825, 'Chêne denté cv. yunnanensis', 1);
 INSERT INTO devWeb_Project_Bdd.Points (idPoint, namePoint, descriptionPoint, latitudePoint, longitudePoint, vernaculairePoint, disponiblePoint) VALUES (160, 'Robinia pseudoacacia', '''Le robinier faux-acacia ou acacia (Robinia pseudoacacia) est une espèce de la famille des Fabacées (légumineuses de la sous-famille des Viciaceae). Cet arbre présente des fleurs zygomorphes caractéristiques chez les Fabacées. Ses fruits sont des gousses ressemblant à un haricot plat avec des graines à l''intérieur.', 166823.60029999912, 150068.2820999995, 'Robinier faux-acacia', 1);
+
 INSERT INTO devWeb_Project_Bdd.CategoriesPoints (idPoint, idCategorie) VALUES (2, 1);
 INSERT INTO devWeb_Project_Bdd.CategoriesPoints (idPoint, idCategorie) VALUES (8, 1);
 INSERT INTO devWeb_Project_Bdd.CategoriesPoints (idPoint, idCategorie) VALUES (37, 1);
