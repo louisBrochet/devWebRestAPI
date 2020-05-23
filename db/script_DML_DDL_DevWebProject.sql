@@ -97,8 +97,8 @@ INSERT INTO devWeb_Project_Bdd.Categories (idCategorie, nameCategorie) VALUES (3
 
 INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (1, 'Parcours des Sciences');
 INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (2, 'Parcours du cyclotron');
-INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (3, 'Parcours du jardin botanique');
-INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (4, 'Parcours du lac');
+INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (3, 'Parcours du lac');
+INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (4, 'Parcours du jardin botanique');
 INSERT INTO devWeb_Project_Bdd.Parcours (idParcours, nameParcours) VALUES (5, 'Parcours du parc de Moulinsart');
 
 INSERT INTO devWeb_Project_Bdd.Points (idPoint, namePoint, descriptionPoint, latitudePoint, longitudePoint, vernaculairePoint, disponiblePoint) VALUES (1, 'Salix alba cv. tristis', 'Le Saule blanc, Saule commun, Saule argenté, Osier blanc, ou Saule Vivier (Salix alba L.), est un arbre de la famille des Salicacées. Cet arbre commun dans les régions tempérées est souvent cultivé en forme de « têtard » pour la production d''osier.', 50.669303, 4.620818, 'Saule blanc pleureur', 1);
